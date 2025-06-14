@@ -4,13 +4,12 @@ on: push
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-
-    services:
-      redis:
-        image: redis
-        ports:
-          - 6379:6379
+    runs-on: ${{ matrix.os }}
+    
+    strategy:
+      matrix: 
+        os: [ubuntu-latest, windows-latest]
+        node: [18, 20]
 
     steps:
       - name: Print variable
@@ -22,7 +21,7 @@ jobs:
       - name: setup
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: ${{ matrix.node }}
       
       - name: Instalar dependencias
         run: npm install
